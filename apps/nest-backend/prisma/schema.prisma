@@ -1,0 +1,142 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model EnvironmentConfig {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  key   String  @unique
+  value String?
+
+  isHidden    Boolean @default(true) @map("can_get")
+  description String?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("environment_configs")
+}
+
+model EmailTemplate {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  name String @unique
+
+  html         String?
+  json         String?
+  neededFields String[] @default([]) @map("needed_fields")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("email_templates")
+}
+
+type File {
+  bucket String?
+  path   String?
+  key    String?
+
+  url String
+
+  createdAt DateTime @default(now())
+}
+
+model Otp {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  email     String @unique
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
+
+  otp            String
+  otpResendCount Int       @default(0) @map("otp_resend_count")
+  otpUntil       DateTime  @map("otp_until")
+  otpBlockUntil  DateTime? @map("otp_block_until")
+
+  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("otps")
+}
+
+enum Gender {
+  male
+  female
+  other
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  email    String  @unique
+  googleId String? @map("google_id")
+
+  role UserRole @default(user)
+
+  username   String? @unique
+  firstName  String? @map("first_name")
+  lastName   String? @map("last_name")
+  middleName String? @map("middle_name")
+
+  avatar File?
+  gender Gender?
+
+  streamKey      String?  @unique @map("stream_key")
+  isStreamActive Boolean? @map("is_stream_active")
+
+  otp            String?
+  otpResendCount Int       @default(0) @map("otp_resend_count")
+  otpUntil       DateTime? @map("otp_until")
+  otpBlockUntil  DateTime? @map("otp_block_until")
+
+  isBlocked    Boolean   @default(false) @map("is_blocked")
+  blockedUntil DateTime? @map("blocked_until")
+  isBanned     Boolean   @default(false) @map("is_banned")
+
+  ipIDs String[]    @db.ObjectId
+  ips   IpAddress[] @relation(fields: [ipIDs], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model IpAddress {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  value String @unique
+
+  city           String?
+  region         String?
+  region_code    String?
+  country_code   String?
+  country_name   String?
+  continent_code String?
+  in_eu          Boolean?
+  postal         String?
+  timezone       String?
+  currency       String?
+
+  isBlocked      Boolean   @default(false) @map("is_blocked")
+  isBlockedUntil DateTime? @map("is_blocked_until")
+
+  usersIDs String[] @db.ObjectId
+  users    User[]   @relation(fields: [usersIDs], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("ip_addresses")
+}

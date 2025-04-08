@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Informator windows!</title>
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval';
+    connect-src 'self' ws://localhost:4000;
+">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
+</head>
+
+<body>
+  <button id="startButton" class="button">Start</button>
+  <button id="stopButton" class="button">Stop</button>
+  <video width="320" height="240" autoplay></video>
+
+  <script type="module" src="./dist/renderer.js"></script>
+</body>
+
+</html>
