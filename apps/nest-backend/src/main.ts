@@ -50,7 +50,8 @@ async function bootstrap() {
     : [
         'http://localhost:3000',
         'http://localhost:3060',
-        'http://localhost:5173'
+        'http://localhost:5173',
+        'http://localhost'
       ]
 
   app.enableCors({
