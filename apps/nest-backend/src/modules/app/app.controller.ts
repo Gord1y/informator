@@ -18,4 +18,9 @@ export class AppController {
       time: new Date().toISOString()
     }
   }
+
+  @Get('health')
+  async healthCheck() {
+    return { status: 'ok' }
+  }
 }
