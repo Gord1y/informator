@@ -110,6 +110,11 @@ export class WsService implements OnModuleDestroy {
         console.log(
           `[ws] Client ${client.id} authenticated with API key ${apiKey}`
         )
+        this.sendMessage(
+          'authenticated',
+          { message: 'Authenticated successfully.' },
+          client
+        )
         break
       }
       case 'startStream': {
@@ -158,5 +163,9 @@ export class WsService implements OnModuleDestroy {
 
   private sendError(client: WsClient, message: string) {
     client.socket.send(JSON.stringify({ type: 'error', payload: { message } }))
+  }
+
+  private sendMessage(type: string, payload: unknown, client: WsClient) {
+    client.socket.send(JSON.stringify({ type, payload }))
   }
 }
