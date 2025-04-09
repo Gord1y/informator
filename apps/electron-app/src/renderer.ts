@@ -1,98 +1,177 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron'
 
-const startButton = document.getElementById('startButton') as HTMLButtonElement;
-const stopButton = document.getElementById('stopButton') as HTMLButtonElement;
-const video = document.querySelector('video') as HTMLVideoElement;
+const streamKeyInput = document.getElementById('streamKeyInput') as HTMLInputElement
+const startButton = document.getElementById('startButton') as HTMLButtonElement
+const stopButton = document.getElementById('stopButton') as HTMLButtonElement
+const previewVideo = document.getElementById('previewVideo') as HTMLVideoElement
+const wsStatusElem = document.getElementById('wsStatus') as HTMLElement
+const rtmpStatusElem = document.getElementById('rtmpStatus') as HTMLElement
+const setupDiv = document.getElementById('setupDiv') as HTMLDivElement
+const streamControls = document.getElementById('streamControls') as HTMLDivElement
 
-const { SOCKET_URL, SOCKET_API_KEY } = process.env;
-if (!SOCKET_URL || !SOCKET_API_KEY) {
-  throw new Error('Missing required environment variables.');
+
+let socket: WebSocket
+let localStream: MediaStream | null = null
+let mediaRecorder: MediaRecorder | null = null
+let streamKey = ""
+
+function updateWSStatus(status: string) {
+  wsStatusElem.innerText = status
 }
 
-let socket: WebSocket;
-let localStream: MediaStream | null = null;
-let mediaRecorder: MediaRecorder | null = null;
+function updateRTMPStatus(status: string) {
+  rtmpStatusElem.innerText = status
+}
 
-const connectWebSocket = () => {
-  socket = new WebSocket(SOCKET_URL);
-  video.srcObject = null;
-  video.pause();
+const { SOCKET_URL, SOCKET_API_KEY, RTMP_URL } = process.env
+if (!SOCKET_URL || !SOCKET_API_KEY || !RTMP_URL) {
+  updateWSStatus("Error: Missing environment variables.")
+
+  throw new Error('Missing required environment variables.')
+}
+
+function connectWebSocket() {
+  if (!SOCKET_URL) {
+    console.error('WebSocket URL is not defined. Cannot connect.')
+    updateWSStatus("WebSocket URL not defined.")
+    return
+  }
+  socket = new WebSocket(SOCKET_URL)
+  updateWSStatus("Connecting...")
 
   socket.addEventListener('open', () => {
-    console.log('WebSocket connection established');
-    socket.send(JSON.stringify({ type: 'authenticate', payload: SOCKET_API_KEY }));
-  });
+    updateWSStatus("Connected")
+    socket.send(JSON.stringify({ type: 'authenticate', payload: SOCKET_API_KEY }))
+  })
 
   socket.addEventListener('message', (event) => {
-    const message = JSON.parse(event.data);
-    switch (message.type) {
-      case 'error': {
-        console.error('Error from server:', message.payload.message);
-        break;
-      }
-      default:
-        console.log('Received unknown message:', message);
+    const message = JSON.parse(event.data)
+    if (message.type === 'error') {
+      console.error('Error from server:', message.payload.message)
+    } else {
+      console.log('Received message:', message)
     }
-  });
+  })
 
   socket.addEventListener('close', () => {
-    if (localStream) alert('WebSocket disconnected. Attempting to reconnect...');
-    console.error('WebSocket connection closed. Attempting to reconnect...');
-    setTimeout(connectWebSocket, 3000);
-  });
-};
+    updateWSStatus("Disconnected")
 
-connectWebSocket();
-
-startButton.addEventListener('click', async () => {
-  try {
-    if (!socket || socket.readyState !== WebSocket.OPEN) {
-      alert('WebSocket is not open. Cannot start stream.');
-      return;
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop()
+      stopStreamingUI()
     }
+    setTimeout(connectWebSocket, 3000)
+  })
+}
+
+connectWebSocket()
+
+
+ipcRenderer.on('rtmp-status', (_event, status: string) => {
+  updateRTMPStatus(status)
+})
+
+ipcRenderer.on('stream-interrupted', (_event, data: { type: string; message: string }) => {
+  console.error(`Stream interrupted due to ${data.type} issue:`, data.message)
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop()
+  }
+  stopStreamingUI()
+
+  if (data.type === 'rtmp' && socket && socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: 'stopStream' }))
+  }
+})
+
+streamKeyInput.addEventListener('input', () => {
+  streamKey = streamKeyInput.value.trim()
+  if (streamKey !== "") {
+    startButton.style.display = "inline-block"
+  } else {
+    startButton.style.display = "none"
+  }
+})
+
+
+function startStreamingUI() {
+  setupDiv.style.display = "none"
+  streamControls.style.display = "flex"
+}
+
+function stopStreamingUI() {
+  if (localStream) {
+    localStream.getTracks().forEach((track) => track.stop())
+    localStream = null
+  }
+  previewVideo.pause()
+  previewVideo.srcObject = null
+  setupDiv.style.display = "flex"
+  streamControls.style.display = "none"
+}
+
+async function startStreaming() {
+  if (socket.readyState !== WebSocket.OPEN) {
+    alert('WebSocket is not open. Cannot start stream.')
+    return
+  }
+  const finalRTMPUrl = RTMP_URL + streamKey
+
+  try {
     localStream = await navigator.mediaDevices.getDisplayMedia({
       video: { width: 1280, height: 720, frameRate: 30 },
       audio: false
-    });
-    video.srcObject = localStream;
-    video.onloadedmetadata = () => video.play();
+    })
+    previewVideo.srcObject = localStream
+    previewVideo.onloadedmetadata = () => previewVideo.play()
 
-    
-    mediaRecorder = new MediaRecorder(localStream, { mimeType: 'video/webm; codecs=vp8' });
+    ipcRenderer.send('start-stream', finalRTMPUrl)
 
+    mediaRecorder = new MediaRecorder(localStream, { mimeType: 'video/webm; codecs=vp8' })
     mediaRecorder.ondataavailable = (event: BlobEvent) => {
       if (event.data && event.data.size > 0) {
-        const reader = new FileReader();
+        const reader = new FileReader()
         reader.onload = function () {
           if (reader.result instanceof ArrayBuffer) {
-            ipcRenderer.send('video-data', Buffer.from(reader.result));
+            ipcRenderer.send('video-data', Buffer.from(reader.result))
           }
-        };
-        reader.readAsArrayBuffer(event.data);
+        }
+        reader.readAsArrayBuffer(event.data)
       }
-    };
+    }
 
     mediaRecorder.onstart = () => {
-      console.log("MediaRecorder started, streaming is live.");
-      socket.send(JSON.stringify({ type: 'startStream' }));
-    };
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'startStream' }))
+      }
+    }
 
-    mediaRecorder.start(1000);
+    mediaRecorder.onstop = () => {
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify({ type: 'stopStream' }))
+      }
+
+      stopStreamingUI()
+    }
+
+    mediaRecorder.start(1000)
+    startStreamingUI()
   } catch (error) {
-    console.error('Error starting stream:', error);
+    console.error('Error starting stream:', error)
   }
-});
+}
+
+startButton.addEventListener('click', () => {
+  startStreaming()
+})
+
 
 stopButton.addEventListener('click', () => {
   if (mediaRecorder && mediaRecorder.state !== "inactive") {
-    mediaRecorder.stop();
+    mediaRecorder.stop()
   }
-  video.pause();
-  video.srcObject = null;
-  if (localStream) {
-    localStream.getTracks().forEach((track) => track.stop());
-    localStream = null;
+  ipcRenderer.send('stop-stream')
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type: 'stopStream' }))
   }
-  socket.send(JSON.stringify({ type: 'stopStream' }));
-  console.log('Streaming stopped.');
-});
+  stopStreamingUI()
+})

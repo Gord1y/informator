@@ -1,23 +1,35 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Informator Streaming app</title>
+    <style>
+      body { font-family: Arial, sans-serif; }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800 flex flex-col items-center justify-center min-h-screen w-full">
+    <h1 class="text-2xl font-bold mb-4">Informator Streaming App</h1>
+    <!-- Status Panel -->
+    <div id="statusDiv" class="bg-gray-100 p-4 rounded shadow-md">
+      <p><b>RTMP Status:</b> <span id="rtmpStatus">Waiting to start streaming</span></p>
+      <p><b>WS Status:</b> <span id="wsStatus">Connecting...</span></p>
+    </div>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Informator windows!</title>
-  <meta http-equiv="Content-Security-Policy" content="
-    default-src 'self';
-    script-src 'self' 'unsafe-inline' 'unsafe-eval';
-    connect-src 'self' ws://localhost:4000;
-">
-  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'" />
-</head>
+    <!-- Stream Setup: Stream Key input and Start button -->
+    <div id="setupDiv" class="bg-gray-100 p-4 rounded shadow-md mt-4 flex flex-col items-center gap-4 max-w-lg">
+      <label for="streamKeyInput" class="text-xl font-semibold text-gray-900">Enter your stream Key:</label>
+      <input type="text" id="streamKeyInput" placeholder="Stream Key" class="border border-gray-300 rounded p-2 w-full max-w-xs" required>
+      <button id="startButton" style="display: none;" class="bg-red-400 text-xl font-bold text-white px-4 py-2 rounded">Start Streaming</button>
+    </div>
 
-<body>
-  <button id="startButton" class="button">Start</button>
-  <button id="stopButton" class="button">Stop</button>
-  <video width="320" height="240" autoplay></video>
+    <!-- Streaming Controls: Video element and Stop button -->
+    <div id="streamControls" style="display: none;" class="bg-gray-100 p-4 rounded shadow-md mt-4 flex flex-col items-center gap-4 max-w-lg">
+      <video id="previewVideo" controls autoplay muted class="w-full max-w-xs rounded shadow-md"></video>
+      <button id="stopButton" class="bg-red-400 text-xl font-bold text-white px-4 py-2 rounded">Stop Stream</button>
+    </div>
 
-  <script type="module" src="./dist/renderer.js"></script>
-</body>
-
+    <script src="./dist/renderer.js"></script>
+  </body>
 </html>
