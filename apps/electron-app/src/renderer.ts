@@ -30,7 +30,7 @@ if (!SOCKET_URL || !RTMP_URL) {
 
 function connectAndAuthenticate(): Promise<WebSocket> {
   return new Promise((resolve, reject) => {
-    if(!SOCKET_URL) {
+    if (!SOCKET_URL) {
       reject(new Error('SOCKET_URL is not defined'))
       return
     }
@@ -45,6 +45,12 @@ function connectAndAuthenticate(): Promise<WebSocket> {
       ws.close()
       reject(new Error('Authentication timeout'))
     }, 5000)
+    const authCloseHandler = () => {
+      if (ws.readyState !== WebSocket.OPEN) {
+        reject(new Error('WebSocket closed before authentication'))
+      }
+    }
+    ws.addEventListener('close', authCloseHandler)
     const handleAuthMessage = (event: MessageEvent) => {
       try {
         const msg = JSON.parse(event.data)
@@ -53,10 +59,12 @@ function connectAndAuthenticate(): Promise<WebSocket> {
           updateWSStatus("Authentication error: " + msg.payload.message)
           ws.close()
           ws.removeEventListener('message', handleAuthMessage)
+          ws.removeEventListener('close', authCloseHandler)
           reject(new Error(msg.payload.message))
         } else if (msg.type === 'authenticated') {
           clearTimeout(authTimeout)
           ws.removeEventListener('message', handleAuthMessage)
+          ws.removeEventListener('close', authCloseHandler)
           ws.addEventListener('message', (event: MessageEvent) => {
             const message = JSON.parse(event.data)
             if (message.type === 'error') {
@@ -73,11 +81,6 @@ function connectAndAuthenticate(): Promise<WebSocket> {
       }
     }
     ws.addEventListener('message', handleAuthMessage)
-    ws.addEventListener('close', () => {
-      if (ws.readyState !== WebSocket.OPEN) {
-        reject(new Error('WebSocket closed before authentication'))
-      }
-    })
     ws.addEventListener('error', () => {
       updateWSStatus("WebSocket error")
       reject(new Error("WebSocket error"))
@@ -147,6 +150,10 @@ ipcRenderer.on('stream-interrupted', (_event, data: { type: string; message: str
 async function startStreaming() {
   try {
     socket = await connectAndAuthenticate()
+    socket.addEventListener('close', () => {
+      updateWSStatus("WebSocket connection closed. Stopping stream.")
+      wsErrorHandler()
+    })
   } catch (error: any) {
     console.error('Authentication failed', error)
     updateWSStatus("Authentication error: " + error.message)
