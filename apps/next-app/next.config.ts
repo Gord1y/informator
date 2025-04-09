@@ -9,6 +9,18 @@ const nextConfig: NextConfig = {
         permanent: false
       }
     ]
+  },
+  webpack: (config: {
+    watchOptions: {
+      poll: number
+      aggregateTimeout: number
+    }
+  }) => {
+    config.watchOptions = {
+      poll: 1000,
+      aggregateTimeout: 100
+    }
+    return config
   }
 }
 
