@@ -1,8 +1,14 @@
-import { Injectable, NestMiddleware } from '@nestjs/common'
-import { NextFunction, Request, Response } from 'express'
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { NextFunction, Request, Response } from 'express';
 
-import { RequestLogDto } from '../../modules/logs/dto/request.log.dto'
-import { LogsService } from '../../modules/logs/logs.service'
+
+
+import { RequestLogDto } from '../../modules/logs/dto/request.log.dto';
+import { LogsService } from '../../modules/logs/logs.service';
+
+
+
+
 
 function filterHeaders(headers: Request['headers']) {
   const filtered = { ...headers }
@@ -28,7 +34,8 @@ export class LoggingMiddleware implements NestMiddleware {
         request_params: JSON.stringify(req.params),
         request_user_agent: req.headers['user-agent'] || '',
         request_ip: req.ip || '',
-        request_origin: req.headers['origin'] || req.headers['referer'] || '',
+        request_origin:
+          req.headers['origin'] || req.headers['referer'] || req.host || '',
         timestamp: new Date()
       }
       this.logger.logRequest(requestLog)

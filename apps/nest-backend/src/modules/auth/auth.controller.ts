@@ -43,7 +43,8 @@ export class AuthController {
     private readonly otpService: OtpService,
     private readonly configService: ConfigService
   ) {
-    this.redirectUrl = 'http://localhost:3000/auth/google/callback' // TODO: move to config
+    const appUrl = this.configService.getOrThrow('CLIENT_URL')
+    this.redirectUrl = `${appUrl}/auth/google/callback`
   }
 
   @Post('register')

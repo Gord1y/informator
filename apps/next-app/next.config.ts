@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: `/auth/google`,
-        destination: `${process.env.NEXT_PUBLIC_API_URL}/auth/google`,
+        destination: `${process.env.NEXT_PUBLIC_REDIRECT_API_URL}/auth/google`,
         permanent: false
       }
     ]

@@ -1,16 +1,14 @@
+'use client'
+
+import { useSearchParams } from 'next/navigation'
+
 import AuthoGoogleCallbackComponent from './_components/component'
 
-interface GoogleCallbackParams {
-  code?: string
-  state?: string
-}
+export default function GoogleCallbackPage() {
+  const searchParams = useSearchParams()
 
-export default async function GoogleCallbackPage({
-  params
-}: {
-  params: GoogleCallbackParams
-}) {
-  const { code, state } = await params
+  const code = searchParams.get('code')
+  const state = searchParams.get('state')
 
   if (!code) {
     throw new Error(

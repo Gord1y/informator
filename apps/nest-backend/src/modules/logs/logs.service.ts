@@ -80,7 +80,7 @@ export class LogsService implements NestLoggerService {
 
   logRequest(requestLog: RequestLogDto) {
     this.logger.info(
-      `Incoming Request ${requestLog.request_method} ${requestLog.request_url}`,
+      `Incoming Request ${requestLog.request_method} ${requestLog.request_url} (${requestLog.request_origin})`,
       { ...requestLog }
     )
   }

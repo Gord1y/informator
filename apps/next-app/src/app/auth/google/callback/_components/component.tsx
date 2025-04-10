@@ -12,7 +12,7 @@ import { authService } from '@/services/auth.service'
 
 interface Props {
   code: string
-  state?: string
+  state?: string | null
 }
 
 const AuthoGoogleCallbackComponent: React.FC<Props> = ({ code, state }) => {
