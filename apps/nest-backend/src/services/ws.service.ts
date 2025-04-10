@@ -60,12 +60,17 @@ export class WsService implements OnModuleDestroy {
 
     ws.on('error', error => console.error('[ws] error:', error))
     ws.on('message', (data: RawData) => this.onMessage(data, client))
-    ws.on('close', () => {
+    ws.on('close', async () => {
       console.log(`[ws] Client ${client.id} disconnected`)
       if (
         client.username &&
         this.activeStreamers.get(client.username) === client.id
       ) {
+        const user = await this.userService.findByUsername(client.username)
+
+        if (user) {
+          this.userService.update(user.id, { isStreamActive: false })
+        }
         this.activeStreamers.delete(client.username)
       }
       delete this.clients[client.id]
