@@ -43,7 +43,9 @@ export class WsService implements OnModuleDestroy {
             this.activeStreamers.delete(streamer)
           }
 
-          await this.userService.update(streamer, { isStreamActive: false })
+          const user = await this.userService.findByUsername(streamer)
+
+          await this.userService.update(user.id, { isStreamActive: false })
           console.log(`[ws] Stopping stream for user ${streamer}`)
         }
       }
