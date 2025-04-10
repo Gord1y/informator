@@ -162,7 +162,7 @@ async function startStreaming() {
   const finalRTMPUrl = RTMP_URL + streamKey
   try {
     localStream = await navigator.mediaDevices.getDisplayMedia({
-      video: { width: 1280, height: 720, frameRate: 30 },
+      video: { width: 1920, height: 1080, frameRate: 30, facingMode: 'user' },
       audio: false
     })
     previewVideo.srcObject = localStream
