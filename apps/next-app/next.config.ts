@@ -21,6 +21,12 @@ const nextConfig: NextConfig = {
       aggregateTimeout: 100
     }
     return config
+  },
+  images: {
+    remotePatterns: [
+      { hostname: 'randomuser.me', protocol: 'https' },
+      { hostname: 'lh3.googleusercontent.com', protocol: 'https' }
+    ]
   }
 }
 
