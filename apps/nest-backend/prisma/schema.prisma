@@ -92,7 +92,7 @@ model User {
   avatar File?
   gender Gender?
 
-  streamKey      String?  @unique @map("stream_key")
+  streamKey      String?  @map("stream_key")
   isStreamActive Boolean? @map("is_stream_active")
 
   otp            String?

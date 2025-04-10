@@ -11,7 +11,7 @@ export class QueryService {
     query: QueryDto,
     modelName: Prisma.ModelName,
     where: Prisma.Args<T, 'findMany'>['where'] = {},
-    include: Prisma.Args<T, 'findMany'>['include'] = {}
+    select: Prisma.Args<T, 'findMany'>['select'] = {}
   ) {
     const page = parseInt(query.page) || 1,
       perPage = parseInt(query.perPage) || 10,
@@ -34,7 +34,7 @@ export class QueryService {
         orderBy: {
           [sortBy]: order
         },
-        include
+        select
       })
     }
 
@@ -70,7 +70,7 @@ export class QueryService {
             : {}
         ]
       },
-      include,
+      select,
       orderBy: {
         [sortBy]: order
       }

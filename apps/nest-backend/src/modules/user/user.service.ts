@@ -79,16 +79,10 @@ export class UserService {
     })
   }
 
-  generateStreamKey(email: string) {
-    const key = `${email}-${new Date().getTime()}`
-    return Buffer.from(key).toString('base64')
-  }
-
   async create(data: Prisma.UserCreateInput) {
     return await this.prisma.user.create({
       data: {
-        ...data,
-        streamKey: this.generateStreamKey(data.email)
+        ...data
       }
     })
   }
@@ -111,47 +105,40 @@ export class UserService {
   }
 
   async findByQuery(query: QueryDto) {
-    return await this.queryService.findByQuery<'user'>(
-      query,
-      'User',
-      {
-        OR: [
-          {
-            email: {
-              contains: query.search,
-              mode: 'insensitive'
-            }
-          },
-          {
-            phone: {
-              contains: query.search,
-              mode: 'insensitive'
-            }
-          },
-          {
-            firstName: {
-              contains: query.search,
-              mode: 'insensitive'
-            }
-          },
-          {
-            lastName: {
-              contains: query.search,
-              mode: 'insensitive'
-            }
-          },
-          {
-            middleName: {
-              contains: query.search,
-              mode: 'insensitive'
-            }
+    return await this.queryService.findByQuery<'user'>(query, 'User', {
+      OR: [
+        {
+          email: {
+            contains: query.search,
+            mode: 'insensitive'
           }
-        ]
-      },
-      {
-        childrens: true
-      }
-    )
+        },
+        {
+          phone: {
+            contains: query.search,
+            mode: 'insensitive'
+          }
+        },
+        {
+          firstName: {
+            contains: query.search,
+            mode: 'insensitive'
+          }
+        },
+        {
+          lastName: {
+            contains: query.search,
+            mode: 'insensitive'
+          }
+        },
+        {
+          middleName: {
+            contains: query.search,
+            mode: 'insensitive'
+          }
+        }
+      ]
+    })
   }
 
   async handleBan(id: string, isBanned: boolean) {

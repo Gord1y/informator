@@ -15,6 +15,7 @@ import { EnvironmentConfigModule } from '../environment-config/environment-confi
 import { LogsModule } from '../logs/logs.module'
 import { PrismaModule } from '../prisma/prisma.module'
 import { SharedModule } from '../shared/shared.module'
+import { StreamerModule } from '../streamer/streamer.module'
 import { UserModule } from '../user/user.module'
 
 import { AppController } from './app.controller'
@@ -40,7 +41,8 @@ import { AppService } from './app.service'
     PrismaModule,
     EnvironmentConfigModule,
     AuthModule,
-    UserModule
+    UserModule,
+    StreamerModule
   ],
   controllers: [AppController],
   providers: [
