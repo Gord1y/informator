@@ -8,12 +8,14 @@ export enum Gender {
 
 export interface IUser {
   id: string
-  email?: string
   googleId?: string
+
+  email?: string
+  username?: string
 
   firstName?: string
   lastName?: string
-  middleName?: string
+  gender?: Gender
 
   streamKey: string
   isStreamActive: boolean
@@ -26,10 +28,9 @@ export interface IUser {
 
 export interface IUserUpdate {
   email?: string
+  username?: string
   firstName?: string
   lastName?: string
-  middleName?: string
-  phone?: string
   gender?: Gender
 }
 

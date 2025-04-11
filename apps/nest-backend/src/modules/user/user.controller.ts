@@ -129,10 +129,23 @@ export class UserController {
   @ApiOperation({
     summary: 'Update current user'
   })
-  async updateUser(@CurrentUser('id') id: string, @Body() data: UpdateSelfDto) {
+  async updateUser(@CurrentUser() user: User, @Body() dto: UpdateSelfDto) {
+    if (dto.email && dto.email !== user.email) {
+      const existingUser = await this.userService.findByEmail(dto.email)
+      if (existingUser) {
+        throw new BadRequestException('Email already exists')
+      }
+    }
+    if (dto.username && dto.username !== user.username) {
+      const existingUser = await this.userService.findByUsername(dto.username)
+      if (existingUser) {
+        throw new BadRequestException('Username already exists')
+      }
+    }
+
     return this.userService.returnUserFields(
-      await this.userService.update(id, {
-        ...data
+      await this.userService.update(user.id, {
+        ...dto
       })
     )
   }

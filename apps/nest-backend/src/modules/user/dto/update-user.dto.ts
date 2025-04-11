@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { UserRole } from '@prisma/client'
+import { Gender, UserRole } from '@prisma/client'
 import { IsEnum, IsOptional, IsString } from 'class-validator'
 
 export class UpdateUserDto {
@@ -13,23 +13,26 @@ export class UpdateUserDto {
   @ApiProperty()
   username?: string
 
-  @IsEnum(UserRole)
-  @IsOptional()
-  @ApiProperty()
-  role?: UserRole
-
   @IsString()
   @IsOptional()
   @ApiProperty()
   firstName?: string
 
-  @IsString()
-  @IsOptional()
   @ApiProperty()
+  @IsOptional()
+  @IsString()
   lastName?: string
 
-  @IsString()
+  @IsEnum(Gender)
+  @IsOptional()
+  @ApiProperty({
+    enum: Gender,
+    required: false
+  })
+  gender?: Gender
+
+  @IsEnum(UserRole)
   @IsOptional()
   @ApiProperty()
-  middleName?: string
+  role?: UserRole
 }

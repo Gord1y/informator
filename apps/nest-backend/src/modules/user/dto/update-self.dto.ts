@@ -23,14 +23,11 @@ export class UpdateSelfDto {
   @IsString()
   lastName?: string
 
-  @IsString()
-  @IsOptional()
-  @ApiProperty()
-  middleName?: string
-
   @IsEnum(Gender)
+  @IsOptional()
   @ApiProperty({
-    enum: Gender
+    enum: Gender,
+    required: false
   })
-  gender: Gender
+  gender?: Gender
 }

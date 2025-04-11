@@ -1,4 +1,5 @@
 import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common'
+import { User } from '@prisma/client'
 import { CurrentUser } from 'src/common/decorators/current-user.decorator'
 import { AuthGuard } from 'src/common/guards/auth.guard'
 import { QueryDto } from 'src/dtos/pagination/query.dto'
@@ -43,7 +44,7 @@ export class StreamerController {
 
   @Post('become')
   @UseGuards(AuthGuard)
-  async becomeStreamer(@CurrentUser('id') userId: string) {
-    return await this.streamerService.becomeStreamer(userId)
+  async becomeStreamer(@CurrentUser() user: User) {
+    return await this.streamerService.becomeStreamer(user.id, user.email)
   }
 }

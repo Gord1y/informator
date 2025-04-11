@@ -37,13 +37,13 @@ export class StreamerService {
     return Buffer.from(key).toString('base64')
   }
 
-  async becomeStreamer(userId: string) {
+  async becomeStreamer(userId: string, email: string) {
     return await this.prisma.user.update({
       where: {
         id: userId
       },
       data: {
-        streamKey: this.generateStreamKey(userId)
+        streamKey: this.generateStreamKey(email)
       }
     })
   }
