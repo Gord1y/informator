@@ -1,14 +1,34 @@
 import { HttpException, Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { Prisma } from '@prisma/client'
 import axios from 'axios'
 import { PrismaService } from 'src/modules/prisma/prisma.service'
 
 @Injectable()
 export class IpService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly configService: ConfigService
+  ) {}
 
   async getDetails(ip: string) {
     try {
+      if (this.configService.get('APP_ENV') !== 'production') {
+        return {
+          ip: ip,
+          city: 'Test City',
+          region: 'Test Region',
+          region_code: 'TR',
+          country_code: 'TR',
+          country_name: 'Turkey',
+          continent_code: 'EU',
+          in_eu: true,
+          postal: '12345',
+          timezone: 'Europe/Istanbul',
+          currency: 'TRY'
+        }
+      }
+
       const resp = await axios.get<{
         ip: string
         city: string
