@@ -31,5 +31,5 @@ export default async function Page({
 
   const streamerInfo = await getStreamerInfo(username)
 
-  return <StreamerComponent streamer={streamerInfo} />
+  return <StreamerComponent streamer={streamerInfo} username={username} />
 }

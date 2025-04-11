@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { Loader } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect } from 'react'
 import { toast } from 'sonner'
 
@@ -62,7 +63,15 @@ const DashboardComponent: React.FC = () => {
                 <br />
                 {data.isStreamActive
                   ? 'You are streaming now.'
-                  : 'You can start streaming now.'}
+                  : 'You can start streaming now.'}{' '}
+                {data.isStreamActive && (
+                  <Link
+                    href={`/streamer/${data.username}`}
+                    className='text-primary'
+                  >
+                    Go to stream
+                  </Link>
+                )}
               </p>
             ) : !data.username ? (
               <p className='text-foreground/50 text-sm'>
