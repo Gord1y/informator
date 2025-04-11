@@ -1,12 +1,19 @@
+import Image from 'next/image'
+
 const InfoBlock: React.FC = () => {
   return (
     <section className='flex w-full flex-col items-center justify-center gap-6 py-8 md:flex-row'>
-      <div className='relative h-64 w-64'>
-        {/* <Image
-          src='/images/sample.jpg'
+      <div className='relative w-64'>
+        <Image
+          src={
+            'https://marketplace.canva.com/EAFmRpxWdA4/2/0/1600w/canva-minimalist-girl-gamer-streaming-twitch-banner-KC7bSAdJiHE.jpg'
+          }
+          width={1920}
+          height={1080}
           alt='Informator Info'
           priority
-        /> */}
+          className='w-full'
+        />
       </div>
       <div className='max-w-md text-center md:text-left'>
         <h2 className='text-3xl font-bold'>Discover Amazing Content</h2>

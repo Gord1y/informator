@@ -48,7 +48,7 @@ const Finalize: React.FC<Props> = ({ email, setStep, type }) => {
     onError: () => {
       setError('otp', {
         type: 'manual',
-        message: 'Неможливо підтвердити OTP'
+        message: 'Cannot finalize with this OTP'
       })
     }
   })
@@ -66,7 +66,7 @@ const Finalize: React.FC<Props> = ({ email, setStep, type }) => {
         name='otp'
         control={control}
         rules={{
-          required: "OTP обов'язковий"
+          required: "OTP Required",
         }}
         render={({ field }) => (
           <div className='mg:my-4 my-2 flex flex-col gap-1'>
@@ -101,7 +101,7 @@ const Finalize: React.FC<Props> = ({ email, setStep, type }) => {
         className='w-full'
         disabled={isPending}
       >
-        {isPending ? 'Завантаження...' : 'Підтвердити'}
+        {isPending ? 'Loading...' : 'Submit'}
       </Button>
       <Button
         variant={'outline'}
@@ -109,7 +109,7 @@ const Finalize: React.FC<Props> = ({ email, setStep, type }) => {
         className='w-full'
         onClick={() => setStep(0)}
       >
-        Назад
+        Back
       </Button>
     </form>
   )

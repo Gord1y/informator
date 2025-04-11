@@ -35,7 +35,7 @@ const Login: React.FC<Props> = ({ setStep, setEmail }) => {
     onError: () => {
       setError('email', {
         type: 'manual',
-        message: 'Неможливо увійти за даним email'
+        message: 'Cannot login with this email'
       })
     }
   })
@@ -52,14 +52,14 @@ const Login: React.FC<Props> = ({ setStep, setEmail }) => {
       <Field
         title={'Email'}
         type={'email'}
-        placeholder={'email@graverse.com.ua'}
+        placeholder={'email@informator.com'}
         autoComplete='email'
         className='mt-0'
         {...register('email', {
-          required: "Email обов'язковий",
+          required: "Email is required",
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-            message: 'Некоректний email'
+            message: 'Invalid email address'
           }
         })}
         error={errors?.email?.message}
@@ -70,7 +70,7 @@ const Login: React.FC<Props> = ({ setStep, setEmail }) => {
         className='mt-2 w-full'
         disabled={isPending}
       >
-        {isPending ? 'Завантаження...' : 'Увійти'}
+        {isPending ? 'Loading...' : 'Next step'}
       </Button>
     </form>
   )

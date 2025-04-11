@@ -1,8 +1,14 @@
-'use client'
+'use client';
 
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
 
-import AuthoGoogleCallbackComponent from './_components/component'
+
+
+import AuthoGoogleCallbackComponent from './_components/component';
+
+
+
+
 
 export default function GoogleCallbackPage() {
   const searchParams = useSearchParams()
@@ -12,7 +18,7 @@ export default function GoogleCallbackPage() {
 
   if (!code) {
     throw new Error(
-      'Сталася помилка авторизації через Google. Спробуйте ще раз.'
+      'Google callback page must have a code query parameter. Try again.'
     )
   }
 

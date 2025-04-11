@@ -17,7 +17,7 @@ interface IPage {
 }
 export const PAGES: IPage[] = [
   {
-    name: 'Головна',
+    name: 'Home',
     href: '/',
     sitemapUrl: '',
     isMenu: true,
@@ -27,16 +27,7 @@ export const PAGES: IPage[] = [
     priority: 1
   },
   {
-    name: 'Відгуки',
-    href: '/reviews',
-    isMenu: false,
-    isAuth: false,
-    isFooter: true,
-    changeFrequency: 'weekly',
-    priority: 0.7
-  },
-  {
-    name: 'Про нас',
+    name: 'About Us',
     href: '/about-us',
     isMenu: true,
     isAuth: false,
@@ -45,7 +36,7 @@ export const PAGES: IPage[] = [
     priority: 0.7
   },
   {
-    name: 'Контакти',
+    name: 'Contact Us',
     href: '/contacts',
     isMenu: true,
     isAuth: false,
@@ -54,25 +45,7 @@ export const PAGES: IPage[] = [
     priority: 0.7
   },
   {
-    name: 'Категорії',
-    href: '/category',
-    isMenu: false,
-    isAuth: false,
-    isFooter: true,
-    changeFrequency: 'daily',
-    priority: 0.8
-  },
-  {
-    name: 'Доставка та оплата',
-    href: '/delivery-and-payment',
-    isMenu: true,
-    isAuth: false,
-    isFooter: true,
-    changeFrequency: 'weekly',
-    priority: 0.7
-  },
-  {
-    name: 'Питання та відповіді',
+    name: 'Q&A',
     href: '/questions',
     isMenu: true,
     isAuth: false,
@@ -81,7 +54,7 @@ export const PAGES: IPage[] = [
     priority: 0.7
   },
   {
-    name: 'Умови використання',
+    name: 'Terms of Service',
     href: '/policy',
     isMenu: false,
     isAuth: false,
@@ -90,7 +63,7 @@ export const PAGES: IPage[] = [
     priority: 0.7
   },
   {
-    name: 'Політика конфіденційності',
+    name: 'Privacy Policy',
     href: '/policy',
     isMenu: false,
     isAuth: false,
@@ -99,35 +72,8 @@ export const PAGES: IPage[] = [
     priority: 0.7
   },
   {
-    name: 'Особистий кабінет',
+    name: 'Dashboard',
     href: '/dashboard',
-    isMenu: false,
-    isAuth: true,
-    isFooter: false,
-    changeFrequency: 'daily',
-    priority: 0.7
-  },
-  {
-    name: 'Бонуси та промокоди',
-    href: '/dashboard/bonuses-and-promo',
-    isMenu: false,
-    isAuth: true,
-    isFooter: false,
-    changeFrequency: 'daily',
-    priority: 0.7
-  },
-  {
-    name: 'Замовлення',
-    href: '/dashboard/orders',
-    isMenu: false,
-    isAuth: true,
-    isFooter: false,
-    changeFrequency: 'daily',
-    priority: 0.7
-  },
-  {
-    name: 'Відгуки',
-    href: '/dashboard/reviews',
     isMenu: false,
     isAuth: true,
     isFooter: false,

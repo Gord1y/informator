@@ -1,4 +1,8 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from 'next';
+
+
+
+
 
 const nextConfig: NextConfig = {
   redirects: async () => {
@@ -25,7 +29,8 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { hostname: 'randomuser.me', protocol: 'https' },
-      { hostname: 'lh3.googleusercontent.com', protocol: 'https' }
+      { hostname: 'lh3.googleusercontent.com', protocol: 'https' },
+      { hostname: 'marketplace.canva.com', protocol: 'https' }
     ]
   }
 }

@@ -36,8 +36,7 @@ const Providers: React.FC<PropsWithChildren<Props>> = ({
         <AuthProvider initalState={currentUser}>
           <ThemeProvider
             attribute='class'
-            defaultTheme='system'
-            enableSystem
+            defaultTheme='light'
             disableTransitionOnChange
           >
             {children}

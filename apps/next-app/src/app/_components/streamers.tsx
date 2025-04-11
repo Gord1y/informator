@@ -44,12 +44,12 @@ const StreamerCard: React.FC<IStreamer> = ({
           Live
         </div>
       )}
-      <div className='relative h-40 w-full'>
+      <div className='relative w-full'>
         <Image
           src={avatar.url}
           alt={streamKey}
-          layout='fill'
-          objectFit='cover'
+          width={1920}
+          height={1080}
         />
       </div>
       <h3 className='mt-2 text-center text-lg font-medium'>{username}</h3>

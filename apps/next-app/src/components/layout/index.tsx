@@ -18,7 +18,6 @@ const Layout: React.FC<PropsWithChildren<Props>> = ({
     <Providers currentUser={currentUser}>
       <Header />
       <Main>{children}</Main>
-      <Footer />
     </Providers>
   )
 }

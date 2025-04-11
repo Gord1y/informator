@@ -37,7 +37,7 @@ const Register: React.FC<Props> = ({ setStep, setEmail }) => {
     onError: () => {
       setError('email', {
         type: 'manual',
-        message: 'Неможливо зареєструватися за даним email'
+        message: 'Cannot register with this email'
       })
     }
   })
@@ -54,37 +54,37 @@ const Register: React.FC<Props> = ({ setStep, setEmail }) => {
       <Field
         title={'Email'}
         type={'email'}
-        placeholder={'email@graverse.com.ua'}
+        placeholder={'email@informator.com'}
         autoComplete='email'
         className='mt-0'
         {...register('email', {
-          required: "Email обов'язковий",
+          required: "Email is required",
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-            message: 'Некоректний email'
+            message: 'Invalid email address'
           }
         })}
         error={errors?.email?.message}
       />
       <Field
-        title={'Ім’я'}
+        title={'Your name'}
         type={'text'}
-        placeholder={'Ім’я'}
+        placeholder={'Daniel'}
         autoComplete='given-name'
         className='mt-0'
         {...register('firstName', {
-          required: "Ім’я обов'язкове"
+          required: "First name is required"
         })}
         error={errors?.firstName?.message}
       />
       <Field
-        title={'Прізвище'}
+        title={'Last name'}
         type={'text'}
-        placeholder={'Прізвище'}
+        placeholder={'Smith'}
         autoComplete='family-name'
         className='mt-0'
         {...register('lastName', {
-          required: "Прізвище обов'язкове"
+          required: "Last name is required"
         })}
         error={errors?.lastName?.message}
       />
@@ -95,7 +95,7 @@ const Register: React.FC<Props> = ({ setStep, setEmail }) => {
         className='mt-2 w-full'
         disabled={isPending}
       >
-        {isPending ? 'Завантаження...' : 'Зареєструватися'}
+        {isPending ? 'Loading...' : 'Next step'}
       </Button>
     </form>
   )
