@@ -104,8 +104,6 @@ export class AuthController {
     if (!otp) throw new HttpException('invalid_otp', 400)
     if (new Date() > otp.otpUntil) throw new HttpException('otp_expired', 400)
 
-    await this.otpService.deleteOtp(dto.email)
-
     const user = await this.userService.create({
       email: otp.email,
       firstName: otp.firstName,

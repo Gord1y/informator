@@ -26,12 +26,11 @@ export class OtpService {
     if (!otpRecord) {
       return null
     }
-    await this.prisma.otp.delete({
+    return await this.prisma.otp.delete({
       where: {
         id: otpRecord.id
       }
     })
-    return otpRecord
   }
 
   async generateOtp(length: number) {
