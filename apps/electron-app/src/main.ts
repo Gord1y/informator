@@ -32,12 +32,14 @@ function startFFmpeg(rtmpUrl: string): void {
   }
 
   ffmpegProcess = child_process.spawn(ffmpegPath as string, [
-    '-re',
     '-f', 'webm',
     '-i', 'pipe:0',
     '-c:v', 'libx264',
-    '-preset', 'veryfast',
+    '-preset', 'ultrafast',
     '-tune', 'zerolatency',
+    '-g', '30',
+    '-keyint_min', '30',
+    '-an',
     '-f', 'flv',
     rtmpUrl
   ])
