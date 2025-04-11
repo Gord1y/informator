@@ -3,10 +3,9 @@ import { Metadata } from 'next'
 import Heading from '@/components/layout/heading'
 import Section from '@/components/layout/section'
 
-
 export const metadata: Metadata = {
-  title: "Contact Us",
-  description: "Contact Us",
+  title: 'Contact Us',
+  description: 'Contact Us'
 }
 
 export default function ContactUsPage() {

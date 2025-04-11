@@ -14,8 +14,8 @@ export default function AboutUsPage() {
       <Heading>About Us</Heading>
       <div className='mt-10 flex w-full flex-col gap-5'>
         <h3>
-          <b className='text-primary font-bold'>informator</b> - it's new place
-          for your streams.
+          <b className='text-primary font-bold'>informator</b> - it&apos;s new
+          place for your streams.
         </h3>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec

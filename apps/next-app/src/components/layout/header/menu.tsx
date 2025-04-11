@@ -60,12 +60,10 @@ const HeaderMenu: React.FC<Props> = ({ currentUser }) => {
         <DropdownMenuLabel>Menu</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => push('/')}>
-            Home
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => push('/')}>Home</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <ThemeSwither /> 
+        <ThemeSwither />
         <DropdownMenuSeparator />
         <DropdownMenuLabel>
           {currentUser && currentUser.authorized && currentUser.user

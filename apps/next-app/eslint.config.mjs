@@ -2,7 +2,7 @@ import { FlatCompat } from '@eslint/eslintrc'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import tsParser from '@typescript-eslint/parser'
 import prettierPlugin from 'eslint-plugin-prettier'
-import tailwindcssPlugin from 'eslint-plugin-tailwindcss'
+// import tailwindcssPlugin from 'eslint-plugin-tailwindcss'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
@@ -46,19 +46,19 @@ const config = [
       '@typescript-eslint/no-explicit-any': 'warn',
       'prettier/prettier': ['error']
     }
-  },
-  {
-    files: ['**/*.css', '**/*.scss'],
-    plugins: {
-      tailwindcss: tailwindcssPlugin
-    },
-    rules: {
-      'tailwindcss/classnames-order': 'warn',
-      'tailwindcss/enforces-shorthand': 'warn',
-      'tailwindcss/no-custom-classname': 'off',
-      'tailwindcss/no-contradicting-classname': 'warn'
-    }
   }
+  // {
+  //   files: ['**/*.css', '**/*.scss'],
+  //   plugins: {
+  //     tailwindcss: tailwindcssPlugin
+  //   },
+  //   rules: {
+  //     'tailwindcss/classnames-order': 'warn',
+  //     'tailwindcss/enforces-shorthand': 'warn',
+  //     'tailwindcss/no-custom-classname': 'off',
+  //     'tailwindcss/no-contradicting-classname': 'warn'
+  //   }
+  // }
 ]
 
 export default config

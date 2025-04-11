@@ -39,10 +39,10 @@ export const AuthProvider: React.FC<{
       {
         httpOnly: false,
         sameSite: 'lax',
-        secure: process.env.NODE_ENV == 'production',
+        secure: process.env.APP_ENV === 'production',
         path: '/',
         domain:
-          process.env.NODE_ENV == 'production'
+          process.env.APP_ENV === 'production'
             ? `.${process.env.NEXT_PUBLIC_SITE_DOMAIN}`
             : '',
         maxAge: 604800000 // 7 days
@@ -58,10 +58,10 @@ export const AuthProvider: React.FC<{
       {
         httpOnly: false,
         sameSite: 'lax',
-        secure: process.env.NODE_ENV == 'production',
+        secure: process.env.APP_ENV === 'production',
         path: '/',
         domain:
-          process.env.NODE_ENV == 'production'
+          process.env.APP_ENV === 'production'
             ? `.${process.env.NEXT_PUBLIC_SITE_DOMAIN}`
             : '',
         maxAge: 604800000 // 7 days
@@ -78,10 +78,10 @@ export const AuthProvider: React.FC<{
       {
         httpOnly: false,
         sameSite: 'lax',
-        secure: process.env.NODE_ENV == 'production',
+        secure: process.env.APP_ENV === 'production',
         path: '/',
         domain:
-          process.env.NODE_ENV == 'production'
+          process.env.APP_ENV === 'production'
             ? `.${process.env.NEXT_PUBLIC_SITE_DOMAIN}`
             : '',
         maxAge: 604800000 // 7 days

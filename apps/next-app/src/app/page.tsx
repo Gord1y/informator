@@ -9,7 +9,6 @@ import { IStreamer } from '@/interfaces/streamer.interface'
 
 const loadStreamers = async () => {
   try {
-    console.log(`${process.env.NEXT_PUBLIC_API_URL}/streamer`)
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/streamer`,
       {
@@ -23,6 +22,7 @@ const loadStreamers = async () => {
 
     return data.result
   } catch (error) {
+    //eslint-disable-next-line no-console
     console.error('Failed to fetch streamers:', error)
     return []
   }

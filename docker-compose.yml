@@ -24,11 +24,8 @@ services:
     volumes:
       - ./apps/nest-backend:/app:delegated
       - nest_backend_node_modules:/app/node_modules
-    command: npm run dev
     ports:
       - "4000:4000"
-    environment:
-      - NODE_ENV=development
     networks:
       - app-network
     restart: always
@@ -40,13 +37,12 @@ services:
     volumes:
       - ./apps/next-app:/app
       - next_app_node_modules:/app/node_modules
-    command: sh -c "npm install && npm run dev"
-    depends_on:
-      - nest-backend
+    command: sh -c "npm install && npm run build && npm run start"
+    # depends_on:
+    #   - nest-backend
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://nest-backend:4000
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true

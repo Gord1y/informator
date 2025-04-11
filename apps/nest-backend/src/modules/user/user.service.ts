@@ -52,7 +52,7 @@ export class UserService {
   }
 
   async findByUsername(username: string) {
-    return await this.prisma.user.findUnique({
+    return await this.prisma.user.findFirst({
       where: {
         username
       }

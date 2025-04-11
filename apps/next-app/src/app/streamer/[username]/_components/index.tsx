@@ -7,7 +7,6 @@ import Section from '@/components/layout/section'
 
 import StreamPlayer from './stream'
 import { IStreamer } from '@/interfaces/streamer.interface'
-import { cn } from '@/lib/utils'
 
 interface Props {
   streamer: IStreamer | null

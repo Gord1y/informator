@@ -66,7 +66,7 @@ const Finalize: React.FC<Props> = ({ email, setStep, type }) => {
         name='otp'
         control={control}
         rules={{
-          required: "OTP Required",
+          required: 'OTP Required'
         }}
         render={({ field }) => (
           <div className='mg:my-4 my-2 flex flex-col gap-1'>

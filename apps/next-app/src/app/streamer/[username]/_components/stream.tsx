@@ -7,7 +7,7 @@ interface Props {
   streamKey: string
 }
 
-const LIVE_OFFSET = 2 // seconds offset from the live edge
+const LIVE_OFFSET = 2
 
 const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -19,7 +19,6 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
 
   const hlsUrl = `${process.env.NEXT_PUBLIC_HLS_API_URL}/${streamKey}.m3u8`
 
-  // Synchronize the isPlaying state with native play/pause events.
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -36,7 +35,6 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
     }
   }, [])
 
-  // Setup HLS stream and auto-play as soon as manifest is parsed.
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
@@ -48,13 +46,12 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
       setIsLoading(false)
       if (video.seekable.length) {
         const liveEdge = video.seekable.end(video.seekable.length - 1)
-        // Only adjust the currentTime if behind the live edge by more than LIVE_OFFSET.
         if (liveEdge - video.currentTime > LIVE_OFFSET) {
           video.currentTime = liveEdge - LIVE_OFFSET
         }
       }
-      // Auto-play the stream immediately.
       video.play().catch(error => {
+        //eslint-disable-next-line no-console
         console.error('Error playing stream:', error)
         setError('Playback error occurred. Please reload the page.')
       })
@@ -63,17 +60,16 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
     let hls: Hls | null = null
 
     if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Use native HLS support.
       video.src = hlsUrl
       video.addEventListener('loadeddata', onManifestParsed)
     } else if (Hls.isSupported()) {
-      // Use Hls.js for browsers that do not have native support.
       hls = new Hls()
       hls.loadSource(hlsUrl)
       hls.attachMedia(video)
       hls.on(Hls.Events.MANIFEST_PARSED, onManifestParsed)
-      hls.on(Hls.Events.ERROR, (event, data) => {
+      hls.on(Hls.Events.ERROR, (_, data) => {
         if (data.fatal) {
+          //eslint-disable-next-line no-console
           console.error('HLS fatal error:', data)
           setError('Error loading stream. Please reload the page.')
         }
@@ -87,7 +83,6 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
     }
   }, [hlsUrl])
 
-  // Pause the video when the document is hidden (for example, when switching tabs).
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.hidden) {
@@ -100,7 +95,6 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
     }
   }, [])
 
-  // Play/Pause toggle button with debouncing to prevent rapid successive clicks.
   const handlePlayPause = async () => {
     if (playInProgress) return
     const video = videoRef.current
@@ -111,7 +105,6 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
       if (isPlaying) {
         video.pause()
       } else {
-        // Only adjust the position if we're noticeably behind the live edge.
         if (video.seekable.length) {
           const liveEdge = video.seekable.end(video.seekable.length - 1)
           if (liveEdge - video.currentTime > LIVE_OFFSET) {
@@ -121,18 +114,19 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
         await video.play()
       }
     } catch (err) {
+      //eslint-disable-next-line no-console
       console.error('Playback error:', err)
       setError('Playback error occurred. Please try reloading the page.')
     }
     setPlayInProgress(false)
   }
 
-  // Toggle full-screen mode.
   const toggleFullScreen = () => {
     const container = containerRef.current
     if (!container) return
     if (!document.fullscreenElement) {
       container.requestFullscreen().catch(err => {
+        //eslint-disable-next-line no-console
         console.error('Error enabling full-screen mode:', err)
       })
     } else {
@@ -161,10 +155,6 @@ const StreamPlayer: React.FC<Props> = ({ streamKey }) => {
           ref={containerRef}
           className='relative h-fit min-h-[50vh] w-full overflow-hidden bg-black'
         >
-          {/* 
-          Auto-play is enabled by adding autoPlay and muted attributes.
-          Muting is required for auto-play in most browsers.
-        */}
           <video
             ref={videoRef}
             playsInline

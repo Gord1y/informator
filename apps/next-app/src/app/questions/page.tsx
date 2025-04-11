@@ -22,7 +22,7 @@ export default function QuestionsPage() {
     <Section disableMaxWidth className='flex flex-col gap-2'>
       <Heading>QUESTIONS and ANSWERS</Heading>
       <p>
-        If you don't found your question,  -{' '}
+        If you don&apos;t found your question, -{' '}
         <Link href={'contact-us'} className='text-primary'>
           contact us
         </Link>

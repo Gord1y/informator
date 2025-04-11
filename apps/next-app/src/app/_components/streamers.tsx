@@ -28,8 +28,6 @@ export default StreamersBlock
 
 const StreamerCard: React.FC<IStreamer> = ({
   avatar,
-  firstName,
-  lastName,
   username,
   isStreamActive,
   streamKey
@@ -45,12 +43,7 @@ const StreamerCard: React.FC<IStreamer> = ({
         </div>
       )}
       <div className='relative w-full'>
-        <Image
-          src={avatar.url}
-          alt={streamKey}
-          width={1920}
-          height={1080}
-        />
+        <Image src={avatar.url} alt={streamKey} width={1920} height={1080} />
       </div>
       <h3 className='mt-2 text-center text-lg font-medium'>{username}</h3>
     </Link>

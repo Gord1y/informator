@@ -21,12 +21,14 @@ async function fetchCurrentUserRole(
       credentials: 'include'
     })
     if (!res.ok) {
+      //eslint-disable-next-line no-console
       console.error('Failed to fetch user role, status:', res.status)
       return null
     }
     const data = await res.json()
     return data.role as UserRoleEnum
   } catch (err) {
+    //eslint-disable-next-line no-console
     console.error('Error fetching user role:', err)
     return null
   }
@@ -50,7 +52,9 @@ export default async function middleware(request: NextRequest) {
       currentUser = JSON.parse(userCookie)
     }
   } catch (error) {
+    //eslint-disable-next-line no-console
     console.error('Error parsing currentUser cookie:', error)
+    currentUser = { authorized: false, user: null }
   }
 
   const isAdminPage = pathname.startsWith(ADMIN_PAGES.HOME)

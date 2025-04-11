@@ -4,7 +4,7 @@ A full-stack monorepo using Electron, Next.js, NestJS, and RTMP streaming powere
 
 ---
 
-## 🚀 How to Run the Application (Dev Mode)
+## 🚀 How to Run the Application (Prod Mode)
 
 This project uses Docker for backend services (NestJS, Next.js, nginx-rtmp) and runs the Electron desktop app **natively on your system**.
 

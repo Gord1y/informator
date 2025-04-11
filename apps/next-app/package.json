@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write '**/*.{js,ts,tsx,json,md}'"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.3",

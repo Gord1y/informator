@@ -44,9 +44,7 @@ async function bootstrap() {
 
   const isProduction = configService.getOrThrow('APP_ENV') == 'production'
   const allowedOrigins = isProduction
-    ? [
-        // TODO: add production domains
-      ]
+    ? ['http://localhost:3000', 'http://localhost']
     : [
         'http://localhost:3000',
         'http://localhost:3060',

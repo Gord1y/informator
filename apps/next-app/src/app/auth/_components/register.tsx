@@ -58,7 +58,7 @@ const Register: React.FC<Props> = ({ setStep, setEmail }) => {
         autoComplete='email'
         className='mt-0'
         {...register('email', {
-          required: "Email is required",
+          required: 'Email is required',
           pattern: {
             value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
             message: 'Invalid email address'
@@ -73,7 +73,7 @@ const Register: React.FC<Props> = ({ setStep, setEmail }) => {
         autoComplete='given-name'
         className='mt-0'
         {...register('firstName', {
-          required: "First name is required"
+          required: 'First name is required'
         })}
         error={errors?.firstName?.message}
       />
@@ -84,7 +84,7 @@ const Register: React.FC<Props> = ({ setStep, setEmail }) => {
         autoComplete='family-name'
         className='mt-0'
         {...register('lastName', {
-          required: "Last name is required"
+          required: 'Last name is required'
         })}
         error={errors?.lastName?.message}
       />
