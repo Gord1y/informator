@@ -32,6 +32,8 @@ const StreamerCard: React.FC<IStreamer> = ({
   isStreamActive,
   streamKey
 }) => {
+  if (!avatar || !username) return null
+
   return (
     <Link
       href={`/streamer/${username}`}
